@@ -9,7 +9,6 @@ import { mimeType } from "./mime-type.validator";
     templateUrl: './post-create.component.html',
     styleUrls: ['./post-create.component.css']
 })
-// This is from PC
 export class PostCreateComponent implements OnInit {
     enteredTitle = '';
     enteredContent = ''; 
