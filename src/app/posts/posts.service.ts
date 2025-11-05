@@ -25,9 +25,10 @@ export class PostsService{
             return { posts: postData.posts.map(post => {
                 return {
                     title: post.title,
-                    content: post.content,
+                    content: post.content,                    
                     id: post._id,
                     imagePath: post.imagePath,
+                    extraInfo: post.extraInfo,
                     creator: post.creator
                 };
             }), 
@@ -44,14 +45,17 @@ export class PostsService{
     }
 
     getPost(id: string){
-        return this.http.get<{_id: string, title: string, content: string, imagePath: string, creator: string}>(BACKEND_URL +id)
+        return this.http.get<{
+            extraInfo: string;_id: string, title: string, content: string, imagePath: string, creator: string
+}>(BACKEND_URL +id)
     }
 
-    addPost(title: string, content: string, image: File){
+    addPost(title: string, content: string, image: File, extraInfo: string){
         //const post: Post = {id: null,title: title, content:content};
         const postData = new FormData();
         postData.append("title",title);
         postData.append("content",content);
+        postData.append("extraInfo", extraInfo);
         postData.append("image", image, title);
         this.http.post<{message: string, post: Post}>(BACKEND_URL, postData)
         .subscribe((responseData) => {            
@@ -59,7 +63,7 @@ export class PostsService{
         })        
     }
 
-    updatePost(id: string, title: string, content: string, image: File | string){
+    updatePost(id: string, title: string, content: string, image: File | string, extraInfo: string){
         let postData: Post | FormData;
         if(typeof(image) === 'object'){
             postData = new FormData();
@@ -68,7 +72,7 @@ export class PostsService{
             postData.append("content", content);
             postData.append("image", image, title)
         } else {
-            postData = {id: id, title: title, content: content, imagePath: image, creator: null}
+            postData = {id: id, title: title, content: content, imagePath: image, extraInfo: extraInfo, creator: null}
         }
         this.http.put(BACKEND_URL + id, postData)
         .subscribe(response => {            

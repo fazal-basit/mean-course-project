@@ -28,6 +28,16 @@
             ></textarea>
             <mat-error *ngIf="form.get('content').invalid">Please enter a post content</mat-error>
         </mat-form-field>
+        <mat-form-field>
+            <textarea 
+            matInput 
+            rows="6" 
+            formControlName="extraInfo"
+            name="extraInfo"            
+            placeholder="Extra Info"
+            ></textarea>
+            <mat-error *ngIf="form.get('extraInfo').invalid">Please enter extra info</mat-error>
+        </mat-form-field>
         <button 
         mat-raised-button
         color="accent"

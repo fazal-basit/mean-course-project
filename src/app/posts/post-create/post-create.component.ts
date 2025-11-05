@@ -35,6 +35,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
             title: new FormControl(null, 
                 {validators: [Validators.required, Validators.minLength(3)]}),
             content: new FormControl(null, {validators: [Validators.required]}),
+            extraInfo: new FormControl(null, {validators: [Validators.required]}),
             image: new FormControl(null, {validators: [Validators.required], asyncValidators: [mimeType]})
         });
         this.route.paramMap.subscribe((paramMap:ParamMap) => {            
@@ -45,13 +46,15 @@ export class PostCreateComponent implements OnInit, OnDestroy {
                 this.postsService.getPost(this.postId).subscribe(postData => {
                     this.isLoading = false;
                     this.post = {id: postData._id, 
-                        title: postData.title, content: 
-                        postData.content, 
+                        title: postData.title, 
+                        content: postData.content,     
+                        extraInfo: postData.extraInfo,                    
                         imagePath: postData.imagePath,
                         creator: postData.creator
                     }; 
                     this.form.setValue({title: this.post.title, 
                                         content: this.post.content,
+                                        extraInfo: this.post.extraInfo,
                                         image: this.post.imagePath});               
                 });
             } else {
@@ -66,9 +69,9 @@ export class PostCreateComponent implements OnInit, OnDestroy {
         }
         this.isLoading = true;
         if(this.mode === 'create'){
-            this.postsService.addPost(this.form.value.title, this.form.value.content, this.form.value.image);
+            this.postsService.addPost(this.form.value.title, this.form.value.content, this.form.value.image, this.form.value.extraInfo);
         } else{
-            this.postsService.updatePost(this.postId, this.form.value.title, this.form.value.content, this.form.value.image)
+            this.postsService.updatePost(this.postId, this.form.value.title, this.form.value.content, this.form.value.image, this.form.value.extraInfo)
         }    
         
         this.form.reset();
